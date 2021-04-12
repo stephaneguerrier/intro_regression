@@ -19,8 +19,12 @@ up.
 [template](https://github.com/edrubin/EC607S20) is based on the work of
 [Ed Rubin](https://edrub.in)
 
-**[Introduction to Regression]()** (note formats: [.html]() | [.pdf]() |
-[.Rmd]())
+Class notes: **[Introduction to
+Regression](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.html)**
+(note formats:
+[.html](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.html)
+| .pdf 🚧 👷 |
+[.Rmd](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.Rmd))
 
 # License
 
