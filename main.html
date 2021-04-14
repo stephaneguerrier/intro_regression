@@ -642,7 +642,47 @@ dat = data.frame(response = c(dietA, dietB, dietC),
 
 ---
 
-# YUMING COULD YOU ADD THE SOLUTION
+# .smaller[Solution: Comparing diets A, B and C]
+
+.panelset[
+.panel[.panel-name[Step1: ANOVA]
+To compare diets A, B, and C, we first test if there's any difference among these 3 diets by considering a Welch's one-way ANOVA.
+
+1. .purple[Define hypotheses:] `$$H_0: \mu_A = \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: H_0 \text{ is false}.$$`
+2. .purple[Define] `\(\color{#6A5ACD}{\alpha}\)`: We consider `\(\alpha = 5\%\)`.
+3. .purple[Compute p-value]: p-value = `\(0.85\%\)` (see R code tab for details).
+4. .purple[Conclusion:] We have p-value &lt; `\(\alpha\)` so we reject the null and accept the alternative at the significance level of `\(5\%\)`.
+]
+.panel[.panel-name[R Code]
+
+```r
+(anova_res = oneway.test(response ~ groups, data = dat))
+```
+
+```
+#&gt; 
+#&gt; 	One-way analysis of means (not assuming equal variances)
+#&gt; 
+#&gt; data:  response and groups
+#&gt; F = 5.2693, num df = 2.00, denom df = 48.48, p-value = 0.008497
+```
+]
+.panel[.panel-name[Step2: T-tests]
+1. .smallest[.purple[Define hypotheses:]] `$$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B &lt; \mu_C.$$`
+2. .smallest[.purple[Define significance level]: We consider] `\(\small \alpha/3 = 5\%/3 \approx 1.67\%\)` .smallest[for each pair of hypotheses.]
+3. .smallest[.purple[Compute p-values]:] `\(\small p_{AB} \approx 51.89\%\)` .smallest[for the t-test between diets A and B;] `\(\small p_{AC} \approx 0.32\%\)` .smallest[for the t-test between diets A and C;] `\(\small p_{BC} \approx 0.38\%\)` .smallest[for the t-test between diets B and C (see R code tab for details).]
+4. .smallest[.purple[Conclusion:] Since] `\(\small p_{AB} &gt; 1.67\%\)`.smallest[,] `\(\small p_{AC} &lt; 1.67\%\)` .smallest[and] `\(\small p_{BC} &lt; 1.67\%\)`.smallest[, we fail to reject] `\(\small H_0: \mu_A = \mu_B\)` .smallest[and reject both] `\(\small H_0: \mu_A = \mu_C\)` .smallest[and] `\(\small H_0: \mu_B = \mu_C\)` .smallest[at the significance level of] `\(\small 5\%\)`.smallest[.]
+]
+.panel[.panel-name[R Code]
+
+```r
+t.test(dietA, dietB, alternative = "less")
+t.test(dietA, dietC, alternative = "less")
+t.test(dietB, dietC, alternative = "less")
+```
+]
+
+]
 
 ---
 
