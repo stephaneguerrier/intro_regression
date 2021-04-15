@@ -384,15 +384,15 @@ diet[sample(1:nrow(diet),9),]
 
 ```
 #&gt;    gender age height diet.type initial.weight final.weight
-#&gt; 49   Male  37    198         B             79         71.1
-#&gt; 30 Female  43    171         B             61         56.7
-#&gt; 24   Male  40    190         A             88         84.5
-#&gt; 28 Female  37    172         B             58         56.0
-#&gt; 36 Female  48    163         B             66         64.0
-#&gt; 62 Female  31    170         C             72         71.1
-#&gt; 45   Male  45    160         B             78         72.7
-#&gt; 70   Male  37    173         C             78         77.5
+#&gt; 7  Female  37    174         A             67         65.0
+#&gt; 5  Female  50    170         A             65         62.2
+#&gt; 14 Female  37    167         A             82         81.1
+#&gt; 8  Female  28    176         A             69         60.5
+#&gt; 48   Male  40    171         B             79         72.9
+#&gt; 69   Male  29    166         C             76         72.5
+#&gt; 44   Male  33    190         B             76         72.5
 #&gt; 65 Female  48    153         C             75         68.7
+#&gt; 20   Male  25    165         A             80         77.6
 ```
 ]
 .panel[.panel-name[Select]
@@ -686,13 +686,19 @@ where `response` is the column in `mydata` of all the `\(X_{i(g)}\)` and `groups
 
 ---
 
-# .smaller[Exercise: Comparing diets A, B and C]
+# .smaller[Example: Comparing diets A, B and C]
 
 .panelset[
-.panel[.panel-name[Graph]
-&lt;img src="pics/dietABC.png" width="80%" style="display: block; margin: auto;" /&gt;
+.panel[.panel-name[Procedure (1)]
+To compare diets A, B, and C, we first test if there's any difference among these 3 diets.
+
+1. .purple[Define hypotheses:] $$ H_0: \mu_A = \mu_B = \mu_C\ \ \ \ \text{and} \ \ \ \ H_a: H_0 \text{ is false, or}$$ $$ H_0: \theta_A = \theta_B = \theta_C \ \ \ \ \text{and} \ \ \ \ H_a: H_0 \text{ is false}.$$
+2. .purple[Define] `\(\color{#6A5ACD}{\alpha}\)`: we consider `\(\alpha = 5\%\)`.
+3. Get the data and visualize them with e.g. boxplots, for checking which test is most suitable.
+3. .purple[Compute the p-value] and compare it to `\(\alpha\)`. 
+4. .purple[Conclusion:] reject or fail to reject the null hypothesis at the significance level of 5%.
 ]
-.panel[.panel-name[Import]
+.panel[.panel-name[Import Data]
 
 ```r
 # Import data and compute weight loss
@@ -705,31 +711,24 @@ dietB = diet$weight.loss[diet$diet.type=="B"]
 dietC = diet$weight.loss[diet$diet.type=="C"]
 
 # Create data frame
-dat = data.frame(response = c(dietA, dietB, dietC), 
+mydata = data.frame(response = c(dietA, dietB, dietC), 
                  groups = c(rep("A", length(dietA)), 
                             rep("B", length(dietB)), 
                             rep("C", length(dietC))))
 ```
 ]
+.panel[.panel-name[Graph]
+
+```
+#&gt; [1] "n(A)= 24 , n(B)= 25 , n(C)= 27"
+```
+
+&lt;img src="pics/dietABC.png" width="60%" style="display: block; margin: auto;" /&gt;
 ]
-
----
-
-# .smaller[Solution: Comparing diets A, B and C]
-
-.panelset[
-.panel[.panel-name[Step1: ANOVA]
-To compare diets A, B, and C, we first test if there's any difference among these 3 diets by considering a Welch's one-way ANOVA.
-
-1. .purple[Define hypotheses:] `$$H_0: \mu_A = \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: H_0 \text{ is false}.$$`
-2. .purple[Define] `\(\color{#6A5ACD}{\alpha}\)`: We consider `\(\alpha = 5\%\)`.
-3. .purple[Compute p-value]: p-value = `\(0.85\%\)` (see R code tab for details).
-4. .purple[Conclusion:] We have p-value &lt; `\(\alpha\)` so we reject the null and accept the alternative at the significance level of `\(5\%\)`.
-]
-.panel[.panel-name[R Code]
+.panel[.panel-name[Welch's test]
 
 ```r
-(anova_res = oneway.test(response ~ groups, data = dat))
+(anova_res = oneway.test(response ~ groups, data = mydata))
 ```
 
 ```
@@ -741,19 +740,90 @@ To compare diets A, B, and C, we first test if there's any difference among thes
 #&gt; 0.008497
 ```
 ]
-.panel[.panel-name[Step2: T-tests]
-1. .smallest[.purple[Define hypotheses:]] `$$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B &lt; \mu_C.$$`
-2. .smallest[.purple[Define significance level]: We consider] `\(\small \alpha/3 = 5\%/3 \approx 1.67\%\)` .smallest[for each pair of hypotheses.]
-3. .smallest[.purple[Compute p-values]:] `\(\small p_{AB} \approx 51.89\%\)` .smallest[for the t-test between diets A and B;] `\(\small p_{AC} \approx 0.32\%\)` .smallest[for the t-test between diets A and C;] `\(\small p_{BC} \approx 0.38\%\)` .smallest[for the t-test between diets B and C (see R code tab for details).]
-4. .smallest[.purple[Conclusion:] Since] `\(\small p_{AB} &gt; 1.67\%\)`.smallest[,] `\(\small p_{AC} &lt; 1.67\%\)` .smallest[and] `\(\small p_{BC} &lt; 1.67\%\)`.smallest[, we fail to reject] `\(\small H_0: \mu_A = \mu_B\)` .smallest[and reject both] `\(\small H_0: \mu_A = \mu_C\)` .smallest[and] `\(\small H_0: \mu_B = \mu_C\)` .smallest[at the significance level of] `\(\small 5\%\)`.smallest[.]
+.panel[.panel-name[Results]
+1. Welch's test appears suitable in this case.
+2. For the former, we obtain: p-value =  0.85%.
+4. .purple[Conclusion:] We have p-value &lt; `\(\alpha\)` so we reject the null hypothesis at the significance level of 5%.
 ]
-.panel[.panel-name[R Code]
+]
+---
+
+# .smaller[Example: Comparing diets A, B and C]
+
+.panelset[
+.panel[.panel-name[Procedure (2)]
+1. .smallest[.purple[Define hypotheses:]] `$$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B &lt; \mu_C.$$`
+2. .smallest[.purple[Define significance level]: we consider] `\(\small \alpha/3 = 5\%/3 \approx 1.67\%\)` .smallest[for each pair of hypotheses.]
+3. .purple[Compute the p-values] and compare them to `\(\alpha/3\)`. 
+4. .purple[Conclusion:] reject or fail to reject the null hypotheses at the .pink["familywise"] significance level of 5\%.
+]
+.panel[.panel-name[Analysis AB]
 
 ```r
-t.test(dietA, dietB, alternative = "less")
-t.test(dietA, dietC, alternative = "less")
-t.test(dietB, dietC, alternative = "less")
+test.AB=t.test(dietA, dietB, alternative = "less")
+test.AB
 ```
+
+```
+#&gt; 
+#&gt; 	Welch Two Sample t-test
+#&gt; 
+#&gt; data:  dietA and dietB
+#&gt; t = 0.047594, df = 46.865, p-value = 0.5189
+#&gt; alternative hypothesis: true difference in means is less than 0
+#&gt; 95 percent confidence interval:
+#&gt;      -Inf 1.160216
+#&gt; sample estimates:
+#&gt; mean of x mean of y 
+#&gt;     3.300     3.268
+```
+]
+.panel[.panel-name[Analysis AC]
+
+```r
+test.AC=t.test(dietA, dietC, alternative = "less")
+test.AC
+```
+
+```
+#&gt; 
+#&gt; 	Welch Two Sample t-test
+#&gt; 
+#&gt; data:  dietA and dietC
+#&gt; t = -2.8462, df = 48.862, p-value = 0.003225
+#&gt; alternative hypothesis: true difference in means is less than 0
+#&gt; 95 percent confidence interval:
+#&gt;      -Inf -0.75944
+#&gt; sample estimates:
+#&gt; mean of x mean of y 
+#&gt;  3.300000  5.148148
+```
+]
+.panel[.panel-name[Analysis BC]
+
+```r
+test.BC=t.test(dietB, dietC, alternative = "less")
+test.BC
+```
+
+```
+#&gt; 
+#&gt; 	Welch Two Sample t-test
+#&gt; 
+#&gt; data:  dietB and dietC
+#&gt; t = -2.7858, df = 49.436, p-value = 0.003776
+#&gt; alternative hypothesis: true difference in means is less than 0
+#&gt; 95 percent confidence interval:
+#&gt;        -Inf -0.7488193
+#&gt; sample estimates:
+#&gt; mean of x mean of y 
+#&gt;  3.268000  5.148148
+```
+]
+.panel[.panel-name[Conclusion]
+.smallest[We have:] `\(\small p_{AB} \approx 51.89\%\)` .smallest[for the Welch t-test between diets A and B;] `\(\small p_{AC} \approx 0.32\%\)` .smallest[for the Welch t-test between diets A and C;] `\(\small p_{BC} \approx 0.38\%\)` .smallest[for the Welch t-test between diets B and C.]
+
+.smallest[.purple[Conclusion:] Since] `\(\small p_{AB} &gt; 1.67\%\)`.smallest[,] `\(\small p_{AC} &lt; 1.67\%\)` .smallest[and] `\(\small p_{BC} &lt; 1.67\%\)`.smallest[, we fail to reject] `\(\small H_0: \mu_A = \mu_B\)` .smallest[and reject both] `\(\small H_0: \mu_A = \mu_C\)` .smallest[and] `\(\small H_0: \mu_B = \mu_C\)` .smallest[at the .pink["familywise"] significance level of] `\(\small 5\%\)`.smallest[.]
 ]
 
 ] 
@@ -1459,7 +1529,7 @@ In this case, the two methods (i.e. forward and backward) appear to be equivalen
 ]
 .panel[.panel-name[Check]
 
-&lt;img src="main_mpvf_files/figure-html/unnamed-chunk-35-1.svg" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;img src="main_mpvf_files/figure-html/unnamed-chunk-37-1.svg" width="85%" style="display: block; margin: auto;" /&gt;
 
 ```
 #&gt; ******************************************************************
