@@ -4,18 +4,18 @@
     <title>Modelling and Data Analytics for Pharmaceutical Sciences</title>
     <meta charset="utf-8" />
     <meta name="author" content="Stéphane Guerrier" />
-    <link href="main_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="main_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
-    <link href="main_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
-    <link href="main_files/tile-view-0.2.4/tile-view.css" rel="stylesheet" />
-    <script src="main_files/tile-view-0.2.4/tile-view.js"></script>
-    <link href="main_files/panelset-0.2.4/panelset.css" rel="stylesheet" />
-    <script src="main_files/panelset-0.2.4/panelset.js"></script>
-    <script src="main_files/clipboard-2.0.6/clipboard.min.js"></script>
-    <link href="main_files/xaringanExtra-clipboard-0.2.4/xaringanExtra-clipboard.css" rel="stylesheet" />
-    <script src="main_files/xaringanExtra-clipboard-0.2.4/xaringanExtra-clipboard.js"></script>
+    <link href="main_mpvf_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="main_mpvf_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="main_mpvf_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link href="main_mpvf_files/tile-view-0.2.4/tile-view.css" rel="stylesheet" />
+    <script src="main_mpvf_files/tile-view-0.2.4/tile-view.js"></script>
+    <link href="main_mpvf_files/panelset-0.2.4/panelset.css" rel="stylesheet" />
+    <script src="main_mpvf_files/panelset-0.2.4/panelset.js"></script>
+    <script src="main_mpvf_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="main_mpvf_files/xaringanExtra-clipboard-0.2.4/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="main_mpvf_files/xaringanExtra-clipboard-0.2.4/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
-    <link href="main_files/xaringanExtra-extra-styles-0.2.4/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="main_mpvf_files/xaringanExtra-extra-styles-0.2.4/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="my-css.css" type="text/css" />
   </head>
   <body>
@@ -172,25 +172,9 @@ class: inverse, middle, center
 - The metric that is used is the .hi.purple[p-value], which is compared to an a priori chosen .hi.purple[significance level] `\(\alpha\)`, usually `\(\alpha=5\%\)`.
 - Hence, when .pink[rejecting] `\(H_0\)`, for a significance level of  `\(\alpha\)` means that there are `\(\alpha\%\)` chances that the alternative hypothesis `\(H_a\)` is NOT correct.
 
-&lt;---
-
-# Hypothesis testing
-
-
-.smallest[
-|                     | `\(H_0\)` is true                               | `\(H_0\)` is false                          |
-| ------------------- |---------------------------------------------| ----------------------------------------|
-| Can't reject `\(H_0\)`  | `\(\text{Correct decision (prob=}1-\alpha)\)`   | `\(\text{Type II error (prob=}1-\beta)\)`   |
-| Reject `\(H_0\)`        | `\(\text{Type I error (prob}=\alpha)\)`         | `\(\text{Correct decision (prob=}\beta)\)`  |
-]
-
-- The .pink[type I error] corresponds to the probability of rejecting `\(H_0\)` when `\(H_0\)` is true (also called .pink[false positive]). The .purple[type II error] corresponds to the probability of not rejecting `\(H_0\)` when `\(H_a\)` is true (also called .purple[false negative]).
-- A test is of .pink[significance level] `\(\color{#e64173}{\alpha}\)` when the probability of making a type I error equals `\(\alpha\)`. Usually we consider `\(\alpha = 5\%\)`, however, this can vary depending on the context.
-- A test is of .purple[power] `\(\color{#6A5ACD}{\beta}\)` when the probability to make a type II error is `\(1-\beta.\)` In other words, the power of a test is its probability of rejecting `\(H_0\)` when `\(H_0\)` is false (or the probability of accepting `\(H_a\)` when `\(H_a\)` is true).
----
 ---
 
-# What are p-values? 
+# What are p-values?
 
 - .smallest[The .hi-purple[p-value] can be thought as the probability of observing a test statistic that is at least as extreme as actually observed, assuming that] `\(\small H_0\)` .smallest[is true.]
 - .smallest[Informally, .pink[a p-value can be understood as a measure of plausibility of the null hypothesis given the data]. Small p-value indicates strong evidence against] `\(\small H_0\)`.
@@ -251,106 +235,169 @@ We will discuss three .pink[two-sample location tests]:
 Hypotheses for comparing the means of two groups .hi-purple2[A] and .hi-blue[B]:
 
 `$$H_0: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \color{#eb078e}{=} \mu_0 \ \ \ \ \text{and} \ \ \ \ H_a: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \ \big[ \color{#eb078e}{&gt;} \text{ or } \color{#eb078e}{&lt;} \text{ or } \color{#eb078e}{\neq} \big] \ \mu_0.$$`
-This test considers the following assumed model for group .hi-purple2[A] and .hi-blue[B]
-
-`$$X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-where `\(g=A,B\)`, `\(i=1,...,n_{g}\)`, `\(\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)` and `\(\sum n_{g}\delta_{g} =0\)`. 
-
-📝 `\(\color{#6A5ACD}{n_A}\)` `\(=\)` sample size of group .hi-purple2[A], `\(\color{#6A5ACD}{\mu_{A} = \mu + \delta_A}\)` `\(=\)` population mean of group .hi-purple2[A], `\(\color{#06bcf1}{n_B}\)` and `\(\color{#06bcf1}{\mu_{B} = \mu + \delta_B}\)` are similarly defined for group .hi-blue[B].
-
-
+Usually one chooses `\(\mu_0=0\)` meaning that under `\(H_0\)` there is no difference between the two samples means.
 
 Test statistic's distribution under `\(H_0\)`:
 
 `$$\color{#b4b4b4}{T = \frac{(\overline{X}_{A}-\overline{X}_{B})-\mu_0}{s_{p}\sqrt{n_{A}^{-1}+n_{B}^{-1}}} \ {\underset{H_0}{\sim}} \ \text{Student}(n_{A}+n_{B}-2).}$$` 
----
-
-# .smaller[Discussion - Student's t-test]
 
 - R function: 
 
 .center[
 `t.test(x = ..., y = ..., alternative = ..., var.equal = TRUE)`.]
 
-- This test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Mann-Whitney-Wilcoxon test (see later) is (probably) a better option.
-- For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
+---
+
+# .smaller[Two independent sample Student's t-test]
+
+One could also formulate the same test by considering a .pink[linear model] for each observation `\(\color{#6A5ACD}{X_{iA}},i=1,\ldots \color{#6A5ACD}{n_A}\)` and `\(\color{#06bcf1}{X_{iB}},i=1,\ldots,\color{#06bcf1}{n_B}\)`, or in short `\(X_{i(g)}\)`, where `\(g=\color{#6A5ACD}{A},\color{#06bcf1}{B}\)`, `\(i=1,...,n_{g}\)`.
+
+Indeed, each observation in one of the groups can be considered as a realization of a random variable with mean `\(\mu_g\)`, and hence
+
+`$$X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)},$$`
+where, for example, `\(\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)`.
+
+Under `\(H_0\)` (equal means), then we can write
+
+`$$X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},\;\;\; \color{#6A5ACD}{\mu_A}\leq\mu\leq\color{#06bcf1}{\mu_B}$$` 
+
+Then the null hypothesis becomes `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf1}{n_B\delta_B}=0\)`. 
+
+---
+
+# .smaller[Discussion - Student's t-test]
+
+
+- This test relies on the following assumptions:
+  - the observations in each group are spread around their respective means following a normal distribution `\(N(\mu_g,\sigma^2)\)`,
+  - The spread around the mean is the same in each group, i.e. `\(\sigma^2\)`.
+- These assumptions can hence be violated for example when
+  - there are  .pink[outliers] in one or both groups, 
+  - the sample distribution in each group is .pink[skewed],
+  - the spread (variance) of the distribution is different in the two groups.
 - In practice, the assumption of equal variance is hard to verify so .hi.pink[we recommend to avoid this test in practice].
+- In that case, an alternative test is the .pink[Welch's t-test] (see later.)
+- If outliers appear to be present, an alternative test is the .pink[Mann-Whitney-Wilcoxon test] (see later).
 
 ---
 
 # .smaller[Two independent sample Welch's t-test]
 
-This test considers the following assumed model for group .hi-purple2[A] and .hi-blue[B]
+The hypotheses are the same as for the Student t-test: 
 
-`$$X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-where `\(g=A,B\)`, `\(i=1,...,n_{g}\)`, `\(\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}_g})\)` and `\(\sum n_{g}\delta_{g} =0\)`. 
-
-📝 `\(\color{#6A5ACD}{n_A}\)` `\(=\)` sample size of group .hi-purple2[A], `\(\color{#6A5ACD}{\mu_{A} = \mu + \delta_A}\)` `\(=\)` population mean of group .hi-purple2[A], `\(\color{#06bcf1}{n_B}\)` and `\(\color{#06bcf1}{\mu_{B} = \mu + \delta_B}\)` are similarly defined for group .hi-blue[B].
-
-Hypotheses: 
-
-`$$H_0: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \color{#eb078e}{=} \mu_0 \ \ \ \ \text{and} \ \ \ \ H_a: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \ \big[ \color{#eb078e}{&gt;} \text{ or } \color{#eb078e}{&lt;} \text{ or } \color{#eb078e}{\neq} \big] \ \mu_0.$$`
+`$$H_0: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \color{#eb078e}{=} \mu_0 \ \ \ \ \text{and} \ \ \ \ H_a: \color{#6A5ACD}{\mu_A} - \color{#06bcf1}{\mu_B} \ \big[ \color{#eb078e}{&gt;} \text{ or } \color{#eb078e}{&lt;} \text{ or } \color{#eb078e}{\neq} \big] \ \mu_0,$$`
+with generally `\(\mu_0=0\)`.
 
 Test statistic's distribution under `\(H_0\)`:
 
 `$$\color{#b4b4b4}{T = \frac{(\overline{X}_{A}-\overline{X}_{B})-\mu_0}{\sqrt{s^2_A/n_{A} + s^2_B/n_{B}}} \ {\underset{H_0}{\sim}} \ \text{Student}(df).}$$` 
-
----
-
-# .smaller[Discussion - Welch's t-test]
+which is different from the one used in the Student t-test (see later).
 
 - R function: 
 
 .center[
 `t.test(x = ..., y = ..., alternative = ...)`.]
 
-- This test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Mann-Whitney-Wilcoxon test (see later) is (probably) a better option.
-- For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
-- This test does not require the variances of the two groups to be equal. If the variances of the two groups are the same (which is rather unlikely in practice), the Welch's t-test losses a little bit of power compared to the Student's t-test.
-- The computation of `\(df\)` (i.e. the degrees of freedom of the distribution under the null) is beyond the scope of this class.
+---
+
+# .smaller[Two independent sample Welch's t-test]
+
+The corresponding linear model remains 
+
+`$$X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},\;\;\; \color{#6A5ACD}{\mu_A}\leq\mu\leq\color{#06bcf1}{\mu_B},$$`
+with associated null hypothesis `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf1}{n_B\delta_B}=0\)`.
+
+The hypotheses, on the other hand, change to `\(\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}_g})\)`, i.e. the variance is allowed to be different in each group.
+
+- Notes:
+  - The Welch's test strongly relies on the .pink[assumed absence of outliers]... 
+  - The sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
+  - Even if the equality of variance is true, there is not real loss in using the Welch's t-test compared to the Student's t-test.
 
 ---
 
 # .smaller[Mann-Whitney-Wilcoxon test]
 
-This test considers the following assumed model for group .hi-purple2[A] and .hi-blue[B]
+With the Mann-Whitney-Wilcoxon test, one assesses the difference between a more general location measure than the population mean for group .hi-purple2[A] and .hi-blue[B].
 
-`$$X_{i(g)} = \color{#eb078e}{\theta_{g}} + \varepsilon_{i(g)} = \theta + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-where `\(g=A,B\)`, `\(i=1,...,n_{g}\)`, `\(\varepsilon_{i(g)} \overset{iid}{\sim} (0,\color{#eb078e}{\sigma^{2}})\)` and `\(\sum n_{g}\delta_{g} =0\)`. 
+Let this location measure (or center) be denoted by respectively `\(\color{#6A5ACD}{\theta_{A}}\)` and `\(\color{#06bcf1}{\theta_{B}}\)`.
 
-📝 `\(\color{#6A5ACD}{n_A}\)` `\(=\)` sample size of group .hi-purple2[A], `\(\color{#6A5ACD}{\theta_{A} = \theta + \delta_A}\)` `\(=\)` population .pink[location] of group .hi-purple2[A], `\(\color{#06bcf1}{n_B}\)` and `\(\color{#06bcf1}{\theta_{B} = \theta + \delta_B}\)` are similarly defined for group .hi-blue[B].
+The hypotheses are 
 
-Hypotheses: `\(H_0: \color{#6A5ACD}{\theta_A} - \color{#06bcf1}{\theta_B} \color{#eb078e}{=} \theta_0 \ \ \ \ \text{and} \ \ \ \ H_a: \color{#6A5ACD}{\theta_A} - \color{#06bcf1}{\theta_B} \ \big[ \color{#eb078e}{&gt;} \text{ or } \color{#eb078e}{&lt;} \text{ or } \color{#eb078e}{\neq} \big] \ \theta_0.\)`
+`$$H_0: \color{#6A5ACD}{\theta_A} - \color{#06bcf1}{\theta_B} \color{#eb078e}{=} \theta_0 \ \ \ \ \text{and} \ \ \ \ H_a: \color{#6A5ACD}{\theta_A} - \color{#06bcf1}{\theta_B} \ \big[ \color{#eb078e}{&gt;} \text{ or } \color{#eb078e}{&lt;} \text{ or } \color{#eb078e}{\neq} \big] \ \theta_0,$$`
+with in most cases `\(\theta_0=0\)`.
 
-Test statistic's distribution under `\(H_0\)`:
+Test statistic is based on ranks:
 
 `$$\color{#b4b4b4}{Z = \frac{\sum_{i=1}^{n_{B}}R_{i(g)}-[n_{B}(n_{A}+n_{B}+1)/2]}{\sqrt{n_{A}n_{B}(n_{A}+n_{B}+1)/12}},}$$`
 .grey[where] `\(\color{#b4b4b4}{R_{i(g)}}\)` .grey[denotes the global rank of the] `\(\color{#b4b4b4}{i}\)`.grey[-th observation of group] `\(\color{#b4b4b4}{g}\)`.grey[.]
 
+
 ---
 
-# .smaller[Discussion - Mann-Whitney-Wilcoxon test]
+# .smaller[Mann-Whitney-Wilcoxon test]
 
-- R function: `wilcox.test(x = ..., y = ..., alternative = ...)`.
-- This test is ".pink[robust]" in the sense that (unlike the t-tests) it is not overly affected by outliers.
-- For the Mann-Whitney-Wilcoxon test to be comparable to the t-tests (i.e. testing for the mean) we need to assume: (1) The distributions are symmetric, (2) the variances are the same. Then, we have `\(\color{#6A5ACD}{\theta_A = \mu_A}\)` and `\(\color{#06bcf1}{\theta_B = \mu_B}\)`.
-- Compared to the t-tests, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met.
-- The distribution of this method under the null is complicated and can be obtained by different methods (e.g. exact, asymptotic normal, ...). The details are beyond the scope of this class.
- 
+- R function: 
+
+.center[`wilcox.test(x = ..., y = ..., alternative = ...)`.]
+
+- Notes:
+  - The distribution of the test statistic under the null is elaborated and can be obtained by different methods (e.g. exact, asymptotic normal, ...). The details are beyond the scope of this class.
+  - Since the test statistic is based on the global ranks of the data, i.e. one uses values form `\(1\)` to `\((\color{#6A5ACD}{n_A}+\color{#06bcf1}{n_B})\)` instead of the observed values, outliers can at most get the minimal or maximal rank, independently of the observed value.
+  - Also, since the ranks are equally spaced, the possible skweness of the distribution within groups has no effect of the test statistic.
+  - Hence, the Mann-Whitney-Wilcoxon test is said to be ".pink[robust]" to outliers and skweness.
+
 ---
 
-# Comparing diets A and B 
+# .smaller[Mann-Whitney-Wilcoxon test]
+
+As for the previous tests, one can rewrite the the hypotheses relative to the following linear model
+
+`$$X_{i(g)} = \color{#eb078e}{\theta_{g}} + \varepsilon_{i(g)} = \theta + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},\;\;\;\; \color{#6A5ACD}{\theta_A}\leq\theta\leq\color{#06bcf1}{\theta_B},$$`
+where  `\(\varepsilon_{i(g)} \overset{iid}{\sim} (0,\color{#eb078e}{\sigma^{2}})\)`.
+
+Then the null hypothesis becomes `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf1}{n_B\delta_B}=0\)`. 
+
+Hence, the assumption does not require a normal distribution... However, if the distributions are symmetric, we have that `\(\color{#6A5ACD}{\theta_A = \mu_A}\)` and `\(\color{#06bcf1}{\theta_B = \mu_B}\)`.
+
+Compared to the t-tests or Welch's t-test, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met. .hi.pink[Less powerful means that the probability of rejecting] `\(H_0\)` .hi.pink[when] `\(H_a\)` .hi.pink[is true, is smaller.]
+
+---
+
+# Example: Comparing diets A and B 
 
 .panelset[
-.panel[.panel-name[Graph]
-&lt;img src="pics/dietAB.png" width="80%" style="display: block; margin: auto;" /&gt;
+.panel[.panel-name[Procedure]
+1. .purple[Define hypotheses:] `\(H_0: \mu_A = \mu_B\)` and `\(H_a: \mu_A \color{#e64173}{\neq} \mu_B\)`.
+2. .purple[Define the significance level] `\(\color{#373895}{\alpha}\)`: we consider `\(\alpha = 5\%\)`.
+3. Get the data and visualize them with e.g. boxplots, for checking which test is most suitable.
+3. .purple[Compute the p-value] and compare it to `\(\alpha\)`. 
+4. .purple[Conclusion:] reject or fail to reject the null hypothesis at the significance level of 5%.
 ]
 .panel[.panel-name[Import]
 
 ```r
 # Import data
 diet = read.csv("data/diet.csv",row.names=1)
+diet[sample(1:nrow(diet),9),]
+```
 
+```
+#&gt;    gender age height diet.type initial.weight final.weight
+#&gt; 49   Male  37    198         B             79         71.1
+#&gt; 30 Female  43    171         B             61         56.7
+#&gt; 24   Male  40    190         A             88         84.5
+#&gt; 28 Female  37    172         B             58         56.0
+#&gt; 36 Female  48    163         B             66         64.0
+#&gt; 62 Female  31    170         C             72         71.1
+#&gt; 45   Male  45    160         B             78         72.7
+#&gt; 70   Male  37    173         C             78         77.5
+#&gt; 65 Female  48    153         C             75         68.7
+```
+]
+.panel[.panel-name[Select]
+
+```r
 # Compute weight loss
 diet$weight.loss = diet$initial.weight - diet$final.weight
 
@@ -363,25 +410,13 @@ dietA = diet$weight.loss[posA]
 dietB = diet$weight.loss[posB]
 ```
 ]
-.panel[.panel-name[Student]
-
-```r
-t.test(dietA, dietB, var.equal = TRUE)
-```
+.panel[.panel-name[Graph]
 
 ```
-#&gt; 
-#&gt; 	Two Sample t-test
-#&gt; 
-#&gt; data:  dietA and dietB
-#&gt; t = 0.0475, df = 47, p-value = 0.9623
-#&gt; alternative hypothesis: true difference in means is not equal to 0
-#&gt; 95 percent confidence interval:
-#&gt;  -1.323275  1.387275
-#&gt; sample estimates:
-#&gt; mean of x mean of y 
-#&gt;     3.300     3.268
+#&gt; [1] "n(A)= 24 , n(B)= 25"
 ```
+
+&lt;img src="pics/dietAB.png" width="60%" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Welch]
 
@@ -403,7 +438,7 @@ t.test(dietA, dietB)
 #&gt;     3.300     3.268
 ```
 ]
-.panel[.panel-name[Wilcox]
+.panel[.panel-name[Mann-W-W]
 
 ```r
 wilcox.test(dietA, dietB)
@@ -419,10 +454,29 @@ wilcox.test(dietA, dietB)
 ```
 ]
 .panel[.panel-name[Results]
-1. .purple[Define hypotheses:] `\(H_0: \mu_A = \mu_B\)` and `\(H_a: \mu_A \color{#e64173}{\neq} \mu_B\)`.
-2. .purple[Define] `\(\color{#373895}{\alpha}\)`: We consider `\(\alpha = 5\%\)`.
-3. .purple[Compute p-value]: Welch's t-test appears suitable in this case, and therefore, we obtain: p-value =  `\(96.22 \%\)` (see R output tab for details).
+1. Welch's t-test appears suitable in this case (maybe also the Mann-Whitney-Wilcoxon test).
+2. For the former, we obtain: p-value =  `\(96.22 \%\)` (see R output tab for details).
 4. .purple[Conclusion:] We have p-value &gt; `\(\alpha\)` so we fail to reject the null hypothesis at the significance level of 5%.
+]
+.panel[.panel-name[(Student)]
+
+```r
+t.test(dietA, dietB, var.equal = TRUE)
+```
+
+```
+#&gt; 
+#&gt; 	Two Sample t-test
+#&gt; 
+#&gt; data:  dietA and dietB
+#&gt; t = 0.0475, df = 47, p-value = 0.9623
+#&gt; alternative hypothesis: true difference in means is not equal to 0
+#&gt; 95 percent confidence interval:
+#&gt;  -1.323275  1.387275
+#&gt; sample estimates:
+#&gt; mean of x mean of y 
+#&gt;     3.300     3.268
+```
 ]
 ]
 
@@ -436,7 +490,7 @@ class: inverse, middle, center
 
 # Problems with multiple samples
 
-In practice, we often even encounter situations where we need to .pink[compare the means of more than 2 groups]. For example, we want to compare the weight loss efficacy of several diets, say diets .hi-purple2[A], .hi-blue[B], .hi-green[C]. Your theory could, for example, be the following: `\(0 &lt; \color{#6A5ACD}{\mu_A} = \color{#06bcf1}{\mu_B} &lt; \color{#8bb174}{\mu_C}\)`. A possible approach to evaluate its validity:
+In practice, we often even encounter situations where we need to .pink[compare the means of more than 2 groups]. For example, we want to compare the weight loss efficacy of several diets, say diets .hi-purple2[A], .hi-blue[B], .hi-green[C]. The aim could, for example, be to evaluate the following hypothesis: `\(0 &lt; \color{#6A5ACD}{\mu_A} = \color{#06bcf1}{\mu_B} &lt; \color{#8bb174}{\mu_C}\)`. One intuitive (but .hi.pink[inappropriate]) approach could be:
 
 1. Show that `\(\color{#8bb174}{\mu_C}\)` is greater than `\(\color{#6A5ACD}{\mu_A}\)` and `\(\color{#06bcf1}{\mu_B}\)` (i.e. Test 1:  `\(H_0\)`: `\(\color{#6A5ACD}{\mu_A} = \color{#8bb174}{\mu_C}\)`, `\(H_a\)`: `\(\color{#6A5ACD}{\mu_A} &lt; \color{#8bb174}{\mu_C}\)`; Test 2: `\(H_0\)`: `\(\color{#06bcf1}{\mu_B} = \color{#8bb174}{\mu_C}\)`, `\(H_a\)`: `\(\color{#06bcf1}{\mu_B} &lt; \color{#8bb174}{\mu_C}\)`). Here we hope to reject `\(H_0\)` in both cases.
 2. Show that `\(\color{#6A5ACD}{\mu_A}\)` and `\(\color{#06bcf1}{\mu_B}\)` are greater than 0 (i.e. Test 3:  `\(H_0\)`: `\(\color{#6A5ACD}{\mu_A} = 0\)`, `\(H_a\)`: `\(\color{#6A5ACD}{\mu_A} &gt; 0\)`; Test 4: `\(H_0\)`: `\(\color{#06bcf1}{\mu_B} = 0\)`, `\(H_a\)`: `\(\color{#06bcf1}{\mu_B} &gt;0\)`). Here we also hope to reject `\(H_0\)` in both cases.
@@ -546,11 +600,9 @@ We will discuss three .pink[multiple-sample location tests]:
 
 .smallest[This test considers the following assumed model for G groups]
 `$$\small X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-.smallest[where] `\(\small g=1,\ldots, G\)`, `\(i=1,...,n_{g}\)`, `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)` .smallest[and] `\(\small \sum n_{g}\delta_{g}=0\)`. 
+.smallest[where] `\(\mu\)` .smallest[is the overall mean,] `\(\small g=1,\ldots, G\)`, `\(i=1,...,n_{g}\)`, `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)` .smallest[so that] `\(\small H_0:\sum n_{g}\delta_{g}=0\)`. 
 
-📝 `\(\small n_i =\)` .smallest[sample size of group] `\(\small i\)`, `\(\small \mu_i = \mu + \delta_i =\)` .smallest[population mean of group] `\(\small i\)`, `\(\small i=1,\ldots, G\)`.
-
-.smallest[Hypotheses:]
+.smallest[This corresponds to:]
 `$$\small H_0: \color{#6A5ACD}{\mu_1} \color{#eb078e}{=} \color{#06bcf1}{\mu_2} \color{#eb078e}{=} \ldots \color{#eb078e}{=} \color{#8bb174}{\mu_G} \ \ \ \ \text{and} \ \ \ \ H_a: \mu_i \color{#eb078e}{\neq} \mu_j \ \ \text{for at least one pair of} \ \ (i,j).$$`
 
 .smallest[Test statistic's distribution under] `\(\small H_0\)`:
@@ -562,24 +614,27 @@ We will discuss three .pink[multiple-sample location tests]:
 
 # Discussion - Fisher's one-way ANOVA
 
-- R function: 
+R function: 
 
 .center[
 `aov(response ~ groups, data = mydata)`.]
 
-- This test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Kruskal-Wallis test (see later) is (probably) a better option.
-- For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
-- In practice, the assumption of equal variance is hard to verify so .hi.pink[we recommend to avoid this test in practice].
+where `response` is the column in `mydata` of all the `\(X_{i(g)}\)` and `groups` is the column in `mydata`that identifies `\(g\)` (the groups).
+
+- Notes:
+  - The Fisher's test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Kruskal-Wallis test (see later) is (probably) a better option.
+  - For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness and .pink[equality of variance] within the groups.
+  - In practice, the assumption of equal variance is hard to verify so .hi.pink[we recommend to avoid testing for this in practice].
 
 ---
 
 # Welch's one-way ANOVA
 
-.smallest[This test considers the following assumed model for G groups]
+.smallest[This test considers the same assumed model for G groups]
 `$$\small X_{i(g)} = \color{#eb078e}{\mu_{g}} + \varepsilon_{i(g)} = \mu + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-.smallest[where] `\(\small g=1,\ldots, G\)`, `\(i=1,...,n_{g}\)`, `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma_g^{2}})\)` .smallest[and] `\(\small \sum n_{g}\delta_{g}=0\)`. 
+.smallest[but with] `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma_g^{2}})\)` .smallest[and with the same ] `\(\small H_0:\sum n_{g}\delta_{g}=0\)`. 
 
-.smallest[Hypotheses:]
+.smallest[This corresponds to:]
 `$$\small H_0: \color{#6A5ACD}{\mu_1} \color{#eb078e}{=} \color{#06bcf1}{\mu_2} \color{#eb078e}{=} \ldots \color{#eb078e}{=} \color{#8bb174}{\mu_G} \ \ \ \ \text{and} \ \ \ \ H_a: \mu_i \color{#eb078e}{\neq} \mu_j \ \ \text{for at least one pair of} \ \ (i,j).$$`
 
 .smallest[Test statistic's distribution under] `\(\small H_0\)`:
@@ -595,24 +650,25 @@ We will discuss three .pink[multiple-sample location tests]:
 .center[
 `oneway.test(response ~ groups, data = mydata)`.]
 
-- This test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Kruskal-Wallis test (see later) is (probably) a better option.
-- For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
-- This test does not require the variances of the groups to be equal. If the variances of all the groups are the same (which is rather unlikely in practice), the Welch's one-way ANOVA losses a little bit of power compared to the Fisher's one-way ANOVA.
+- Notes:
+  - This test strongly relies on the .pink[assumed absence of outliers]. If outliers appear to be present the Kruskal-Wallis test (see later) is (probably) a better option.
+  - For moderate and small sample sizes, the sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
+  - This test does not require the variances of the groups to be equal. If the variances of all the groups are the same (which is rather unlikely in practice), the Welch's one-way ANOVA losses a little bit of power compared to the Fisher's one-way ANOVA.
 
 ---
 
 # Kruskal-Wallis test
 
-.smallest[This test considers the following assumed model for G groups]
+.smallest[This test considers the same assumed model for G groups]
 `$$\small X_{i(g)} = \color{#eb078e}{\theta_{g}} + \varepsilon_{i(g)} = \theta + \color{#eb078e}{\delta_{g}} + \varepsilon_{i(g)},$$`
-.smallest[where] `\(\small g=1,\ldots, G\)`, `\(i=1,...,n_{g}\)`, `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)` .smallest[and] `\(\small \sum n_{g}\delta_{g}=0\)`. 
+.smallest[but with]  `\(\small \varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}})\)` .smallest[and] `\(\small H_0: \sum n_{g}\delta_{g}=0\)`. 
 
-📝 `\(\small n_i =\)` .smallest[sample size of group] `\(\small i\)`, `\(\small \theta_i = \theta + \delta_i =\)` .smallest[population .pink[location] of group] `\(\small i\)`, `\(\small i=1,\ldots, G\)`.
+.smallest[The] `\(\color{#eb078e}{\theta_{g}},g=1,\ldots,G\)` .smallest[are location measures, not necessarily means.] 
 
-.smallest[Hypotheses:]
+.smallest[This corresponds to:]
 `$$\small H_0: \color{#6A5ACD}{\theta_1} \color{#eb078e}{=} \color{#06bcf1}{\theta_2} \color{#eb078e}{=} \ldots \color{#eb078e}{=} \color{#8bb174}{\theta_G} \ \ \ \ \text{and} \ \ \ \ H_a: \theta_i \color{#eb078e}{\neq} \theta_j \ \ \text{for at least one pair of} \ \ (i,j).$$`
 
-.smallest[Test statistic's distribution under] `\(\small H_0\)`: `\(\small \color{#b4b4b4}{H = \frac{\frac{12}{N(N+1)} \sum_{g=1}^G \frac{\overline{R}_g}{n_g}-3(N-1)}{1-\frac{\sum_{v=1}^V{t_v^3-t_v}}{N^3-N}} \ {\underset{H_0}{\sim}} \mathcal{X}(G-1)}\)`.smallest[.grey[, where]] `\(\small \color{#b4b4b4}{\overline{R}_g = \frac{1}{n_g} \sum_{i=1}^{n_g} R_{i(g)}}\)` .smallest[.grey[with]] `\(\small \color{#b4b4b4}{R_{i(g)}}\)` .smallest[.grey[denoting the global rank of the]] `\(\small \color{#b4b4b4}{i^{th}}\)` .smallest[.grey[observation of group]] `\(\small \color{#b4b4b4}{g}\)`.smallest[.grey[,]] `\(\small \color{#b4b4b4}{V}\)` .smallest[.grey[is the number of different values/levels in]] `\(\small \color{#b4b4b4}{X}\)` .smallest[.grey[and]] `\(\small \color{#b4b4b4}{t_v}\)` .smallest[.grey[denotes the number of times a given value/level occurred in]] `\(\small \color{#b4b4b4}{X}\)`.smallest[.grey[.]]
+.smallest[Test statistic's distribution under] `\(\small H_0\)`: `\(\small \color{#b4b4b4}{K = \frac{\frac{12}{N(N+1)} \sum_{g=1}^G \frac{\overline{R}_g}{n_g}-3(N-1)}{1-\frac{\sum_{v=1}^V{t_v^3-t_v}}{N^3-N}} \ {\underset{H_0}{\sim}} \mathcal{X}(G-1)}\)`.smallest[.grey[, where]] `\(\small \color{#b4b4b4}{\overline{R}_g = \frac{1}{n_g} \sum_{i=1}^{n_g} R_{i(g)}}\)` .smallest[.grey[with]] `\(\small \color{#b4b4b4}{R_{i(g)}}\)` .smallest[.grey[denoting the global rank of the]] `\(\small \color{#b4b4b4}{i^{th}}\)` .smallest[.grey[observation of group]] `\(\small \color{#b4b4b4}{g}\)`.smallest[.grey[,]] `\(\small \color{#b4b4b4}{V}\)` .smallest[.grey[is the number of different values/levels in]] `\(\small \color{#b4b4b4}{X}\)` .smallest[.grey[and]] `\(\small \color{#b4b4b4}{t_v}\)` .smallest[.grey[denotes the number of times a given value/level occurred in]] `\(\small \color{#b4b4b4}{X}\)`.smallest[.grey[.]]
 
 ---
 
@@ -623,9 +679,10 @@ We will discuss three .pink[multiple-sample location tests]:
 .center[
 `kruskal.test(response ~ groups, data = mydata)`.]
 
-- This test is ".pink[robust]" in the sense that (unlike the one-way ANOVA) it is not overly affected by outliers.
-- For the Kruskal-Wallis test to be comparable to the one-way ANOVAs (i.e. testing for the mean) we need to assume: (1) The distributions are symmetric, (2) the variances are the same. Then, we have `\(\color{#eb078e}{\theta_i = \mu_i, i=1,\ldots,G}\)`.
-- Compared to the one-way ANOVA, the Kruskal-Wallis test is less powerful if their requirements (Gaussian and possibly same variances) are met.
+- Notes:
+  - This test is ".pink[robust]" in the sense that it is not overly affected by skewness and outliers.
+  - For the Kruskal-Wallis test to be comparable to the one-way ANOVAs (i.e. testing for the mean) we need to assume: (1) The distributions are symmetric, (2) the variances are the same. Then, we have `\(\color{#eb078e}{\theta_i = \mu_i, i=1,\ldots,G}\)`.
+  - Compared to the one-way ANOVA, the Kruskal-Wallis test is less powerful if their requirements (Gaussian and possibly same variances) are met.
 
 ---
 
@@ -699,7 +756,7 @@ t.test(dietB, dietC, alternative = "less")
 ```
 ]
 
-]
+] 
 
 ---
 
@@ -1402,7 +1459,7 @@ In this case, the two methods (i.e. forward and backward) appear to be equivalen
 ]
 .panel[.panel-name[Check]
 
-&lt;img src="main_files/figure-html/unnamed-chunk-34-1.svg" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;img src="main_mpvf_files/figure-html/unnamed-chunk-35-1.svg" width="85%" style="display: block; margin: auto;" /&gt;
 
 ```
 #&gt; ******************************************************************
