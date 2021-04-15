@@ -779,7 +779,37 @@ dat = data.frame(response = c(dietA, dietB, dietC),
 
 ---
 
-# YUMING COULD YOU ADD THE SOLUTION
+# .smaller[Solution: Comparing diets A, B and C]
+
+.panelset[
+.panel[.panel-name[Step1: ANOVA]
+To compare diets A, B, and C, we first test if there's any difference among these 3 diets by considering a Welch's one-way ANOVA.
+
+1. .purple[Define hypotheses:] $$H_0: \mu_A = \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: H_0 \text{ is false}.$$
+2. .purple[Define] $\color{#6A5ACD}{\alpha}$: We consider $\alpha = 5\%$.
+3. .purple[Compute p-value]: p-value = $0.85\%$ (see R code tab for details).
+4. .purple[Conclusion:] We have p-value < $\alpha$ so we reject the null and accept the alternative at the significance level of $5\%$.
+]
+.panel[.panel-name[R Code]
+```{r}
+(anova_res = oneway.test(response ~ groups, data = dat))
+```
+]
+.panel[.panel-name[Step2: T-tests]
+1. .smallest[.purple[Define hypotheses:]] $$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B < \mu_C.$$
+2. .smallest[.purple[Define significance level]: We consider] $\small \alpha/3 = 5\%/3 \approx 1.67\%$ .smallest[for each pair of hypotheses.]
+3. .smallest[.purple[Compute p-values]:] $\small p_{AB} \approx 51.89\%$ .smallest[for the t-test between diets A and B;] $\small p_{AC} \approx 0.32\%$ .smallest[for the t-test between diets A and C;] $\small p_{BC} \approx 0.38\%$ .smallest[for the t-test between diets B and C (see R code tab for details).]
+4. .smallest[.purple[Conclusion:] Since] $\small p_{AB} > 1.67\%$.smallest[,] $\small p_{AC} < 1.67\%$ .smallest[and] $\small p_{BC} < 1.67\%$.smallest[, we fail to reject] $\small H_0: \mu_A = \mu_B$ .smallest[and reject both] $\small H_0: \mu_A = \mu_C$ .smallest[and] $\small H_0: \mu_B = \mu_C$ .smallest[at the significance level of] $\small 5\%$.smallest[.]
+]
+.panel[.panel-name[R Code]
+```{r, eval=FALSE}
+t.test(dietA, dietB, alternative = "less")
+t.test(dietA, dietC, alternative = "less")
+t.test(dietB, dietC, alternative = "less")
+```
+]
+
+]
 
 ---
 
@@ -1258,26 +1288,87 @@ include_graphics("pics/extrapolating.png")
 
 ---
 
-# .smaller[Exercise: Urine Cortisol vs Chips CHANGE YUMING???]
+# .smaller[Exercise: Crime Rate]
 
 .panelset[
 .panel[.panel-name[Problem]
-A researcher in Nutrition Science is interested in studying the effects of consuming .pink[fried food on human's health]. To study this issue, this researcher conducted an experiment on 61 pigs which are randomly assigned with .pink[Chips] and .purple2[Non-Chips] diets. Then, the following variables were measured: `group` (C for Chips, NC for Non-Chips), `gender` and several hormones (`urine_cortisol`, `serum_cortisol`, `ACTH`, `CRH`, `testosterone` and `LH`). Based on this data, can we conclude that fried food group (i.e. Chips) has increased level of urine cortisol compared to the control?
+A police governor is interested in studying the effects of various variables by the US states on the .hi-pink[crime rate]. To study this issue, 47 crime rate data were collected, together with the following variables: `Youth` (number of males aged 18-24 per 1k), `Southern` (southern state, 1=yes, 0=no), `Education` (education time), `Expenditure` (expenditure on police), `LabourForce` (number of young men employed per 1k), `Males` (number of males per 1k females), `StateSize` (state size in hundred thousands), `HighYouthUnemploy` (1=yes, 0=no), `Wage` (median weekly wage), and `BelowWage` (number of families below half wage per 1k). .pink[Based on this data, can you find a suitable model to predict the crime rate?]
 ]
 .panel[.panel-name[Import]
 ```{r}
 # Import data
-cortisol_data = read.csv("data/cortisol.csv", row.names=1)
+crime = read.csv("data/crime.csv", row.names=1)
+head(crime)
+```
+]
+]
 
-# Create data frame
-dat = data.frame(group = cortisol_data$group,
-                 gender = cortisol_data$gender,
-                 urine_cortisol = cortisol_data$Urine.Cortisol..pg.mg.,
-                 serum_cortisol = cortisol_data$Serum.Cortisol..ng.ml.,
-                 ACTH = cortisol_data$Serum.ACTH..pg.ml.,
-                 CRH = cortisol_data$Serum.CRH..pg.ml.,
-                 testosterone = cortisol_data$Testosterone..ng.ml.,
-                 LH = cortisol_data$LH..ng.ml.)
+---
+
+# .smaller[Exercise: Crime Rate]
+
+.panelset[
+.panel[.panel-name[Full]
+We start by fitting an initial model with all covariates included (without interactions):
+
+```{r, results = FALSE}
+fit.full = lm(CrimeRate ~ ., data = crime)
+summary(fit.full)
+```
+
+We can see that some variables appear not significant, implying that we may be able to find a smaller model with less variables.
+]
+.panel[.panel-name[Back]
+We can use the `step()` function to perform stepwise model selection using the AIC by removing variables iteratively from our full model. This approach is known as .hi-pink[stepwise backward AIC] and it is an heuristic method which avoids to explore ALL models.
+
+```{r, eval = F}
+fit.aic.backward = step(fit.full, trace = F)
+summary(fit.aic.backward)
+```
+]
+.panel[.panel-name[Back]
+```{r, echo = F}
+fit.aic.backward = step(fit.full, trace = F)
+summary(fit.aic.backward)
+```
+]
+.panel[.panel-name[For]
+It is also possible to consider .hi-pink[a forward approach] starting from a simple model.
+```{r, eval = F}
+fit.initial = lm(CrimeRate ~ 1, data = crime)
+fit.aic.forward = step(fit.initial, 
+                           scope = list(lower = formula(fit.initial),
+                                        upper = formula(fit.full)), 
+                           direction = "forward", trace = FALSE)
+summary(fit.aic.forward)
+```
+]
+.panel[.panel-name[For]
+```{r, echo = F}
+fit.initial = lm(CrimeRate ~ 1, data = crime)
+fit.aic.forward = step(fit.initial, 
+                           scope = list(lower = formula(fit.initial),
+                                        upper = formula(fit.full)), 
+                           direction = "forward", trace = FALSE)
+summary(fit.aic.forward)
+```
+]
+.panel[.panel-name[Comp]
+```{r}
+AIC(fit.full)
+AIC(fit.aic.backward)
+AIC(fit.aic.forward)
+```
+
+In this case, the two methods (i.e. forward and backward) appear to be equivalent.
+]
+.panel[.panel-name[Check]
+```{r, echo = F, message=F, warning=F, results=F}
+library(gamlss)
+fit.gamlss = gamlss(formula(fit.aic.forward), data = crime)
+```
+```{r, out.width = "85%", echo = F}
+plot(fit.gamlss)
 ```
 ]
 ]
