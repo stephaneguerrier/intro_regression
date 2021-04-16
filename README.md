@@ -23,7 +23,9 @@ Class notes: **[Introduction to
 Regression](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.html)**
 (note formats:
 [.html](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.html)
-| .pdf 🚧 👷 |
+|
+[.pdf](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.pdf)
+|
 [.Rmd](https://raw.githack.com/stephaneguerrier/intro_regression/main/main.Rmd))
 
 # License
