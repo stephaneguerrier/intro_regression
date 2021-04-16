@@ -420,7 +420,7 @@ Then the null hypothesis becomes $H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf
 
 - This test relies on the following assumptions:
   - the observations in each group are spread around their respective means following a normal distribution $N(\mu_g,\sigma^2)$,
-  - The spread around the mean is the same in each group, i.e. $\sigma^2$.
+  - the spread around the mean is the same in each group, i.e. $\sigma^2$.
 - These assumptions can hence be violated for example when
   - there are  .pink[outliers] in one or both groups, 
   - the sample distribution in each group is .pink[skewed],
@@ -460,7 +460,7 @@ with associated null hypothesis $H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf1
 The hypotheses, on the other hand, change to $\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}_g})$, i.e. the variance is allowed to be different in each group.
 
 - Notes:
-  - The Welch's test strongly relies on the .pink[assumed absence of outliers]... 
+  - The Welch's test strongly relies on the .pink[assumed absence of outliers].
   - The sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
   - Even if the equality of variance is true, there is not real loss in using the Welch's t-test compared to the Student's t-test.
 
@@ -510,7 +510,7 @@ Then the null hypothesis becomes $H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bcf
 
 Hence, the assumption does not require a normal distribution... However, if the distributions are symmetric, we have that $\color{#6A5ACD}{\theta_A = \mu_A}$ and $\color{#06bcf1}{\theta_B = \mu_B}$.
 
-Compared to the t-tests or Welch's t-test, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met. .hi.pink[Less powerful means that the probability of rejecting] $H_0$ .hi.pink[when] $H_a$ .hi.pink[is true, is smaller.]
+Compared to the t-tests or Welch's t-test, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met. .hi.pink[Less powerful means that the probability of rejecting] ${\color{#eb078e}{H_0}}$ .hi.pink[when] ${\color{#eb078e}{H_a}}$ .hi.pink[is true, is smaller.]
 
 ---
 
@@ -844,10 +844,10 @@ include_graphics("pics/dietABC.png")
 
 .panelset[
 .panel[.panel-name[Procedure (2)]
-1. .smallest[.purple[Define hypotheses:]] $$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B < \mu_C.$$
-2. .smallest[.purple[Define significance level]: we consider] $\small \alpha/3 = 5\%/3 \approx 1.67\%$ .smallest[for each pair of hypotheses.]
+1. .purple[Define hypotheses:] $$H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_B. \\ H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A < \mu_C. \\ H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B < \mu_C.$$
+2. .purple[Define significance level]: we consider $\alpha/3 = 5\%/3 \approx 1.67\%$ for each pair of hypotheses.
 3. .purple[Compute the p-values] and compare them to $\alpha/3$. 
-4. .purple[Conclusion:] reject or fail to reject the null hypotheses at the .pink["familywise"] significance level of 5\%.
+4. .purple[Conclusion:] reject or fail to reject the null hypotheses at the .pink["familywise"] significance level of 5%.
 ]
 .panel[.panel-name[Analysis AB]
 ```{r, eval=T}
@@ -868,9 +868,9 @@ test.BC
 ```
 ]
 .panel[.panel-name[Conclusion]
-.smallest[We have:] $\small p_{AB} \approx 51.89\%$ .smallest[for the Welch t-test between diets A and B;] $\small p_{AC} \approx 0.32\%$ .smallest[for the Welch t-test between diets A and C;] $\small p_{BC} \approx 0.38\%$ .smallest[for the Welch t-test between diets B and C.]
+We have: $p_{AB} \approx 51.89\%$ for the Welch t-test between diets A and B; $p_{AC} \approx 0.32\%$ for the Welch t-test between diets A and C; $p_{BC} \approx 0.38\%$ for the Welch t-test between diets B and C.
 
-.smallest[.purple[Conclusion:] Since] $\small p_{AB} > 1.67\%$.smallest[,] $\small p_{AC} < 1.67\%$ .smallest[and] $\small p_{BC} < 1.67\%$.smallest[, we fail to reject] $\small H_0: \mu_A = \mu_B$ .smallest[and reject both] $\small H_0: \mu_A = \mu_C$ .smallest[and] $\small H_0: \mu_B = \mu_C$ .smallest[at the .pink["familywise"] significance level of] $\small 5\%$.smallest[.]
+.purple[Conclusion:] Since $p_{AB} > 1.67\%$, $p_{AC} < 1.67\%$ and $p_{BC} < 1.67\%$, we fail to reject $H_0: \mu_A = \mu_B$ and reject both $H_0: \mu_A = \mu_C$ and $H_0: \mu_B = \mu_C$ at the .pink["familywise"] significance level of $\small 5\%$.
 ]
 
 ] 
@@ -1436,4 +1436,3 @@ plot(fit.gamlss)
 ```
 ]
 ]
-

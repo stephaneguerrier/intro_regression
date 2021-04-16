@@ -270,7 +270,7 @@ Then the null hypothesis becomes `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06b
 
 - This test relies on the following assumptions:
   - the observations in each group are spread around their respective means following a normal distribution `\(N(\mu_g,\sigma^2)\)`,
-  - The spread around the mean is the same in each group, i.e. `\(\sigma^2\)`.
+  - the spread around the mean is the same in each group, i.e. `\(\sigma^2\)`.
 - These assumptions can hence be violated for example when
   - there are  .pink[outliers] in one or both groups, 
   - the sample distribution in each group is .pink[skewed],
@@ -310,7 +310,7 @@ with associated null hypothesis `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06bc
 The hypotheses, on the other hand, change to `\(\varepsilon_{i(g)} \overset{iid}{\sim} \mathcal{N}(0,\color{#eb078e}{\sigma^{2}_g})\)`, i.e. the variance is allowed to be different in each group.
 
 - Notes:
-  - The Welch's test strongly relies on the .pink[assumed absence of outliers]... 
+  - The Welch's test strongly relies on the .pink[assumed absence of outliers].
   - The sample distribution should be at least .pink[approximately normal] with no strong skewness to ensure the reliability of the test.
   - Even if the equality of variance is true, there is not real loss in using the Welch's t-test compared to the Student's t-test.
 
@@ -360,7 +360,7 @@ Then the null hypothesis becomes `\(H_0:\color{#6A5ACD}{n_A\delta_A}+\color{#06b
 
 Hence, the assumption does not require a normal distribution... However, if the distributions are symmetric, we have that `\(\color{#6A5ACD}{\theta_A = \mu_A}\)` and `\(\color{#06bcf1}{\theta_B = \mu_B}\)`.
 
-Compared to the t-tests or Welch's t-test, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met. .hi.pink[Less powerful means that the probability of rejecting] `\(H_0\)` .hi.pink[when] `\(H_a\)` .hi.pink[is true, is smaller.]
+Compared to the t-tests or Welch's t-test, the Mann-Whitney-Wilcoxon test is less powerful if their requirements (Gaussian and possibly same variances) are met. .hi.pink[Less powerful means that the probability of rejecting] `\({\color{#eb078e}{H_0}}\)` .hi.pink[when] `\({\color{#eb078e}{H_a}}\)` .hi.pink[is true, is smaller.]
 
 ---
 
@@ -384,15 +384,15 @@ diet[sample(1:nrow(diet),9),]
 
 ```
 #&gt;    gender age height diet.type initial.weight final.weight
-#&gt; 7  Female  37    174         A             67         65.0
-#&gt; 5  Female  50    170         A             65         62.2
+#&gt; 17   Male  40    173         A             74         69.5
+#&gt; 3  Female  55    170         A             64         63.3
+#&gt; 52 Female  51    165         C             60         53.0
+#&gt; 45   Male  45    160         B             78         72.7
 #&gt; 14 Female  37    167         A             82         81.1
-#&gt; 8  Female  28    176         A             69         60.5
-#&gt; 48   Male  40    171         B             79         72.9
-#&gt; 69   Male  29    166         C             76         72.5
-#&gt; 44   Male  33    190         B             76         72.5
-#&gt; 65 Female  48    153         C             75         68.7
-#&gt; 20   Male  25    165         A             80         77.6
+#&gt; 71   Male  31    177         C             78         75.2
+#&gt; 51   Male  31    182         B             80         75.7
+#&gt; 19   Male  43    162         A             80         71.0
+#&gt; 33 Female  31    163         B             63         60.3
 ```
 ]
 .panel[.panel-name[Select]
@@ -736,8 +736,7 @@ mydata = data.frame(response = c(dietA, dietB, dietC),
 #&gt; 	One-way analysis of means (not assuming equal variances)
 #&gt; 
 #&gt; data:  response and groups
-#&gt; F = 5.2693, num df = 2.00, denom df = 48.48, p-value =
-#&gt; 0.008497
+#&gt; F = 5.2693, num df = 2.00, denom df = 48.48, p-value = 0.008497
 ```
 ]
 .panel[.panel-name[Results]
@@ -752,10 +751,10 @@ mydata = data.frame(response = c(dietA, dietB, dietC),
 
 .panelset[
 .panel[.panel-name[Procedure (2)]
-1. .smallest[.purple[Define hypotheses:]] `$$\small H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_B. \\ \small H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_C. \\ \small H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B &lt; \mu_C.$$`
-2. .smallest[.purple[Define significance level]: we consider] `\(\small \alpha/3 = 5\%/3 \approx 1.67\%\)` .smallest[for each pair of hypotheses.]
+1. .purple[Define hypotheses:] `$$H_0: \mu_A = \mu_B \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_B. \\ H_0: \mu_A = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_A &lt; \mu_C. \\ H_0: \mu_B = \mu_C \ \ \ \ \text{and} \ \ \ \ H_a: \mu_B &lt; \mu_C.$$`
+2. .purple[Define significance level]: we consider `\(\alpha/3 = 5\%/3 \approx 1.67\%\)` for each pair of hypotheses.
 3. .purple[Compute the p-values] and compare them to `\(\alpha/3\)`. 
-4. .purple[Conclusion:] reject or fail to reject the null hypotheses at the .pink["familywise"] significance level of 5\%.
+4. .purple[Conclusion:] reject or fail to reject the null hypotheses at the .pink["familywise"] significance level of 5%.
 ]
 .panel[.panel-name[Analysis AB]
 
@@ -821,9 +820,9 @@ test.BC
 ```
 ]
 .panel[.panel-name[Conclusion]
-.smallest[We have:] `\(\small p_{AB} \approx 51.89\%\)` .smallest[for the Welch t-test between diets A and B;] `\(\small p_{AC} \approx 0.32\%\)` .smallest[for the Welch t-test between diets A and C;] `\(\small p_{BC} \approx 0.38\%\)` .smallest[for the Welch t-test between diets B and C.]
+We have: `\(p_{AB} \approx 51.89\%\)` for the Welch t-test between diets A and B; `\(p_{AC} \approx 0.32\%\)` for the Welch t-test between diets A and C; `\(p_{BC} \approx 0.38\%\)` for the Welch t-test between diets B and C.
 
-.smallest[.purple[Conclusion:] Since] `\(\small p_{AB} &gt; 1.67\%\)`.smallest[,] `\(\small p_{AC} &lt; 1.67\%\)` .smallest[and] `\(\small p_{BC} &lt; 1.67\%\)`.smallest[, we fail to reject] `\(\small H_0: \mu_A = \mu_B\)` .smallest[and reject both] `\(\small H_0: \mu_A = \mu_C\)` .smallest[and] `\(\small H_0: \mu_B = \mu_C\)` .smallest[at the .pink["familywise"] significance level of] `\(\small 5\%\)`.smallest[.]
+.purple[Conclusion:] Since `\(p_{AB} &gt; 1.67\%\)`, `\(p_{AC} &lt; 1.67\%\)` and `\(p_{BC} &lt; 1.67\%\)`, we fail to reject `\(H_0: \mu_A = \mu_B\)` and reject both `\(H_0: \mu_A = \mu_C\)` and `\(H_0: \mu_B = \mu_C\)` at the .pink["familywise"] significance level of `\(\small 5\%\)`.
 ]
 
 ] 
@@ -1388,20 +1387,20 @@ head(crime)
 ```
 
 ```
-#&gt;   CrimeRate Youth Southern Education Expenditure LabourForce Males
-#&gt; 1      45.5   135        0      12.4          69         540   965
-#&gt; 2      52.3   140        0      10.9          55         535  1045
-#&gt; 3      56.6   157        1      11.2          47         512   962
-#&gt; 4      60.3   139        1      11.9          46         480   968
-#&gt; 5      64.2   126        0      12.2         106         599   989
-#&gt; 6      67.6   128        0      13.5          67         624   972
-#&gt;   StateSize HighYouthUnemploy Wage BelowWage
-#&gt; 1         6                 1  564       139
-#&gt; 2         6                 1  453       200
-#&gt; 3        22                 0  288       276
-#&gt; 4        19                 0  457       249
-#&gt; 5        40                 1  593       171
-#&gt; 6        28                 1  507       206
+#&gt;   CrimeRate Youth Southern Education Expenditure LabourForce Males StateSize
+#&gt; 1      45.5   135        0      12.4          69         540   965         6
+#&gt; 2      52.3   140        0      10.9          55         535  1045         6
+#&gt; 3      56.6   157        1      11.2          47         512   962        22
+#&gt; 4      60.3   139        1      11.9          46         480   968        19
+#&gt; 5      64.2   126        0      12.2         106         599   989        40
+#&gt; 6      67.6   128        0      13.5          67         624   972        28
+#&gt;   HighYouthUnemploy Wage BelowWage
+#&gt; 1                 1  564       139
+#&gt; 2                 1  453       200
+#&gt; 3                 0  288       276
+#&gt; 4                 0  457       249
+#&gt; 5                 1  593       171
+#&gt; 6                 1  507       206
 ```
 ]
 ]
